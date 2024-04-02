@@ -23,7 +23,8 @@ def SpinBucket():
     try:
         s3_client = boto3.client("s3")
 
-        bucket = s3_client.create_bucket(Bucket="mybucket-s2219349")
+        # Create S3 bucket
+        bucket = s3_client.create_bucket(Bucket="s3bucket-s2219349")
 
         print(bucket)
 
@@ -34,19 +35,20 @@ def SpinCloudStack():
     try:
         cloudformation_client = boto3.client('cloudformation')
 
+        # Define CloudFormation template
         cloudformation_template = {
             "AWSTemplateFormatVersion": "2010-09-09",
             "Resources": {
                 "SQSQueue": {
                     "Type": "AWS::SQS::Queue",
                     "Properties": {
-                        "QueueName": "sqs-queue-s2219349"
+                        "QueueName": "sqs-s2219349"
                     }
                 },
                 "DynamoDBTable": {
                     "Type": "AWS::DynamoDB::Table",
                     "Properties": {
-                        "TableName": "dynamodb-table-s2219349",
+                        "TableName": "dyndb-s2219349",
                         "AttributeDefinitions": [
                             {
                                 "AttributeName": "ImageName",
@@ -70,10 +72,11 @@ def SpinCloudStack():
 
         # Create CloudFormation stack
         cloudformation_response = cloudformation_client.create_stack(
-            StackName= "cloudformationstack-s2219349",
+            StackName= "cloudstack-s2219349",
             TemplateBody=json.dumps(cloudformation_template),
             Capabilities=["CAPABILITY_NAMED_IAM"]
         )
+
     except Exception as e:
         print(f"Error Spinning CloudStack {e}")
 

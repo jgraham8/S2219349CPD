@@ -1,19 +1,22 @@
 import boto3
 import time
-import json
 
 def UploadImagesToBucket():
+    # Initialize S3 and SQS clients
     s3_client = boto3.client("s3")
-    sqs_client = boto3.client('sqs')
 
     try:
-        image_files = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg']
+        # List of image files to upload
+        image_files = ['IMAGE1.png', 'IMAGE2.png', 'IMAGE3.png', 'IMAGE4.png', 'IMAGE5.png']
         
-        for image in image_files:
-            s3_client.upload_file(f"./images/{image}", "mybucket-s2219349", image)
+        # Iterate through each image file
+        for index, image in enumerate(image_files):
+            # Upload image file to S3 bucket
+            s3_client.upload_file(f"./images/{image}", "s3bucket-s2219349", image)
             print(f"{image} uploaded.")
-
-            time.sleep(10)
+            
+            # Wait for 10 seconds before uploading the next image
+            time.sleep(10)  
 
         print("Uploading Successful")
     except Exception as e:
